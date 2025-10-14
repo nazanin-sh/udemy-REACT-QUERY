@@ -11,7 +11,8 @@ async function getTreatments(): Promise<Treatment[]> {
 }
 
 export function useTreatments(): Treatment[] {
-  const { data } = useQuery({
+  const fallback: any = [];
+  const { data = fallback } = useQuery({
     queryKey: [queryKeys.treatments],
     queryFn: getTreatments,
   });
