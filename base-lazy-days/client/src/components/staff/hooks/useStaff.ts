@@ -7,7 +7,6 @@ import { filterByTreatment } from "../utils";
 import { axiosInstance } from "@/axiosInstance";
 import { queryKeys } from "@/react-query/constants";
 import { useQuery } from "@tanstack/react-query";
-
 // query function for useQuery
 async function getStaff(): Promise<Staff[]> {
   const { data } = await axiosInstance.get("/staff");

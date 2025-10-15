@@ -13,7 +13,6 @@ function errorHandler(errorMsg: string) {
     const title = `could not ${action} data: ${
       errorMsg ?? "error connecting to server"
     }`;
-    toast.closeAll();
     toast({ id, title, status: "error", variant: "subtle", isClosable: true });
   }
 }
@@ -21,12 +20,12 @@ function errorHandler(errorMsg: string) {
 export const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (error) => {
-      errorHandler(error?.message);
+      errorHandler((error as Error)?.message);
     },
   }),
   mutationCache: new MutationCache({
     onError: (error) => {
-      errorHandler(error?.message);
+      errorHandler((error as Error)?.message);
     },
   }),
 });
