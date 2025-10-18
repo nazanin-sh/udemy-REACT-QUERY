@@ -21,11 +21,6 @@ export function useTreatments(): Treatment[] {
   } = useQuery({
     queryKey: [queryKeys.treatments],
     queryFn: getTreatments,
-    staleTime: 600000,
-    gcTime: 900000,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
   });
   // if (isError && error) {
   //   const title =
