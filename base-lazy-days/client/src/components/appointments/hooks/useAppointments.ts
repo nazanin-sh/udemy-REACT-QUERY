@@ -89,6 +89,7 @@ export function useAppointments() {
     refetchOnMount: true,
     refetchOnWindowFocus: true,
     refetchOnReconnect: true,
+    refetchInterval: 6000,
   });
 
   /** ****************** END 3: useQuery  ******************************* */
