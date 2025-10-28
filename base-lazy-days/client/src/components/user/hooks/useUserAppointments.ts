@@ -4,6 +4,7 @@ import { axiosInstance, getJWTHeader } from "../../../axiosInstance";
 
 import { useLoginData } from "@/auth/AuthContext";
 import { useQuery } from "@tanstack/react-query";
+import { queryKeys } from "@/react-query/constants";
 
 // for when we need a query function for useQuery
 async function getUserAppointments(
@@ -21,7 +22,7 @@ export function useUserAppointments(): Appointment[] {
   const fallback: Appointment[] = [];
   const { data: userAppointments = fallback } = useQuery({
     enabled: !!userId,
-    queryKey: ["user-appoinments"],
+    queryKey: [queryKeys.appointments, queryKeys.user, userId],
     queryFn: () => getUserAppointments(userId, userToken),
   });
 
