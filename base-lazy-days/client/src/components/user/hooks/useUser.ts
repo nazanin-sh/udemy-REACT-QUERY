@@ -7,15 +7,23 @@ import { queryKeys } from "@/react-query/constants";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 // query function
-async function getUser(userId: number, userToken: string) {
-  const { data }: AxiosResponse<{ user: User }> = await axiosInstance.get(
+async function getUser({
+  userId,
+  userToken,
+  signal,
+}: {
+  userId: number;
+  userToken: string;
+  signal?: AbortSignal;
+}): Promise<User> {
+  const axiosResponse: AxiosResponse<{ user: User }> = await axiosInstance.get(
     `/user/${userId}`,
     {
       headers: getJWTHeader(userToken),
+      signal,
     }
   );
-
-  return data.user;
+  return axiosResponse.data.user;
 }
 
 export function useUser() {
@@ -26,7 +34,7 @@ export function useUser() {
 
   const { data: user } = useQuery({
     queryKey: [queryKeys.user, userId],
-    queryFn: () => getUser(userId, userToken),
+    queryFn: ({ signal }) => getUser({ userId, userToken, signal }),
     enabled: !!userId,
     staleTime: Infinity,
   });
