@@ -1,7 +1,13 @@
 import { ChakraProvider } from "@chakra-ui/react";
-import { render as RtlRender } from "@testing-library/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { queryAllByAltText, RenderResult, render as RtlRender } from "@testing-library/react";
 import { PropsWithChildren, ReactElement } from "react";
 import { MemoryRouter } from "react-router-dom";
+
+const generateQueryClient = () => {
+  return new QueryClient()
+}
+
 
 // ** FOR TESTING CUSTOM HOOKS ** //
 // from https://tkdodo.eu/blog/testing-react-query#for-custom-hooks
@@ -13,10 +19,13 @@ import { MemoryRouter } from "react-router-dom";
 // };
 
 // reference: https://testing-library.com/docs/react-testing-library/setup#custom-render
-function customRender(ui: ReactElement) {
+export function customRender(ui: ReactElement, client?: QueryClient) {
+  const queryClient = client ?? generateQueryClient()
   return RtlRender(
     <ChakraProvider>
-      <MemoryRouter>{ui}</MemoryRouter>
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>{ui}</MemoryRouter>
+      </QueryClientProvider>
     </ChakraProvider>
   );
 }
