@@ -3,11 +3,17 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { queryAllByAltText, RenderResult, render as RtlRender } from "@testing-library/react";
 import { PropsWithChildren, ReactElement } from "react";
 import { MemoryRouter } from "react-router-dom";
-
-const generateQueryClient = () => {
-  return new QueryClient()
+import { generateQueryClient } from "@/react-query/queryClient";
+const generateTestQueryClient = () => {
+  const client = generateQueryClient();
+  client.setDefaultOptions({
+    queries: {
+      ...client.getDefaultOptions().queries,
+      retry: false,
+    },
+  });
+  return client;
 }
-
 
 // ** FOR TESTING CUSTOM HOOKS ** //
 // from https://tkdodo.eu/blog/testing-react-query#for-custom-hooks
@@ -20,7 +26,7 @@ const generateQueryClient = () => {
 
 // reference: https://testing-library.com/docs/react-testing-library/setup#custom-render
 export function customRender(ui: ReactElement, client?: QueryClient) {
-  const queryClient = client ?? generateQueryClient()
+  const queryClient = client ?? generateTestQueryClient()
   return RtlRender(
     <ChakraProvider>
       <QueryClientProvider client={queryClient}>

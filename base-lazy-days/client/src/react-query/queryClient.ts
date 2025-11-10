@@ -16,25 +16,27 @@ function errorHandler(errorMsg: string) {
     toast({ id, title, status: "error", variant: "subtle", isClosable: true });
   }
 }
-
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 600000,
-      gcTime: 900000,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
+export function generateQueryClient(): QueryClient {
+  return new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 600000,
+        gcTime: 900000,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+      },
     },
-  },
-  queryCache: new QueryCache({
-    onError: (error) => {
-      errorHandler((error as Error)?.message);
-    },
-  }),
-  mutationCache: new MutationCache({
-    onError: (error) => {
-      errorHandler((error as Error)?.message);
-    },
-  }),
-});
+    queryCache: new QueryCache({
+      onError: (error) => {
+        errorHandler((error as Error)?.message);
+      },
+    }),
+    mutationCache: new MutationCache({
+      onError: (error) => {
+        errorHandler((error as Error)?.message);
+      },
+    }),
+  });
+}
+export const queryClient = generateQueryClient();
